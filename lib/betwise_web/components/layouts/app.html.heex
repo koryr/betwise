@@ -3,16 +3,21 @@
     <:navbar>
       <%= live_component(BetwiseWeb.Navbar,
         current_user: @current_user,
-        id: "navbar"
+        id: "navbar",
+        menu_items: BetwiseWeb.Menus.user_menu_items(@current_user)
       ) %>
     </:navbar>
+    <:sidebar>
+    <%= live_component(BetwiseWeb.Sidebar,
+        current_user: @current_user,
+        id: "sidebar",
+        menu_items: BetwiseWeb.Menus.main_menu_items(@current_user)
+      ) %>
+      
+        
+    </:sidebar>
+     <.flash_group flash={@flash} />
+     <%= @inner_content %>
   </.layout>
 </div>
 
-
-<main class="px-4 py-20 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl">
-    <.flash_group flash={@flash} />
-    <%= @inner_content %>
-  </div>
-</main>

@@ -1,4 +1,6 @@
 defmodule BetwiseWeb.Router do
+  alias BetwiseWeb.UserLive.SysUsers
+  alias BetwiseWeb.DashboardLive
   use BetwiseWeb, :router
 
   import BetwiseWeb.Auth.UserAuth
@@ -17,10 +19,18 @@ defmodule BetwiseWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", BetwiseWeb do
-    pipe_through :browser
+  # scope "/", BetwiseWeb do
+  #   pipe_through :browser
 
-    get "/", PageController, :home
+  #   get "/", PageController, :home
+  # end
+  scope "/" do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :user,
+      on_mount: [{BetwiseWeb.Auth.UserAuth, :mount_current_user}] do
+      live "/", DashboardLive
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -68,6 +78,7 @@ defmodule BetwiseWeb.Router do
       on_mount: [{BetwiseWeb.Auth.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+
     end
   end
 
@@ -86,12 +97,23 @@ defmodule BetwiseWeb.Router do
   scope "/auth", BetwiseWeb.Auth, as: :auth do
     pipe_through :browser
 
-    live "/roles", RoleLive.Index, :index
-    live "/roles/new", RoleLive.Index, :new
-    live "/roles/:id/edit", RoleLive.Index, :edit
+    live_session :role_current_user,
+      on_mount: [{BetwiseWeb.Auth.UserAuth, :mount_current_user}] do
+      live "/roles", RoleLive.Index, :index
+      live "/roles/new", RoleLive.Index, :new
+      live "/roles/:id/edit", RoleLive.Index, :edit
 
-    live "/roles/:id", RoleLive.Show, :show
-    live "/roles/:id/show/edit", RoleLive.Show, :edit
+      live "/roles/:id", RoleLive.Show, :show
+      live "/roles/:id/show/edit", RoleLive.Show, :edit
+    end
   end
 
+  scope "/users" do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :users,
+      on_mount: [{BetwiseWeb.Auth.UserAuth, :mount_current_user}] do
+      live "/", BetwiseWeb.UserLive.SysUsers
+    end
+  end
 end

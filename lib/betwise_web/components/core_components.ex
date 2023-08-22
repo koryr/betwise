@@ -576,6 +576,12 @@ defmodule BetwiseWeb.CoreComponents do
     """
   end
 
+  def icon(%{name: _} = assigns) do
+    ~H"""
+    <span class={[@name, @class]} />
+    """
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do

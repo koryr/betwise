@@ -19,9 +19,9 @@ defmodule BetwiseWeb.Auth.RoleLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
+        <.input field={@form[:role_diplay_name]} type="text" label="Role Display name" />
         <.input field={@form[:role_name]} type="text" label="Role name" />
         <.input field={@form[:description]} type="text" label="Description" />
-        <.input field={@form[:permissions]} type="text" label="Permissions" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Role</.button>
         </:actions>

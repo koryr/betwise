@@ -11,12 +11,21 @@
 <.list>
   <:item title="Role name"><%= @role.role_name %></:item>
   <:item title="Description"><%= @role.description %></:item>
-  <:item title="Permissions"><%= @role.permissions %></:item>
+  <:item title="Permissions">
+    <% Enum.each(@role.permissions, fn {key, value} ->
+      "#{key}#{value}"
+    end) %>
+  </:item>
 </.list>
 
 <.back navigate={~p"/auth/roles"}>Back to roles</.back>
 
-<.modal :if={@live_action == :edit} id="role-modal" show on_cancel={JS.patch(~p"/auth/roles/#{@role}")}>
+<.modal
+  :if={@live_action == :edit}
+  id="role-modal"
+  show
+  on_cancel={JS.patch(~p"/auth/roles/#{@role}")}
+>
   <.live_component
     module={BetwiseWeb.Auth.RoleLive.FormComponent}
     id={@role.id}
