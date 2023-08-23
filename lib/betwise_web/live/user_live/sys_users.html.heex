@@ -1,8 +1,27 @@
 <.header>
   Users
   <:actions>
-    <.link patch={~p"/auth/users/new"}>
+    <.link patch={~p"/users/new"}>
       <.button>New User</.button>
     </.link>
   </:actions>
 </.header>
+
+<.table
+  id="users"
+  rows={@streams.users}
+  row_click={fn {_id, user} -> JS.navigate(~p"/users/#{user}") end}
+>
+  <:col :let={{_id, user}} label="First Name"><%= user.first_name %></:col>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="user-modal" show on_cancel={JS.patch(~p"/users")}>
+  <.live_component
+    module={BetwiseWeb.UserLive.FormComponent}
+    id={@user.id || :new}
+    title={@page_title}
+    action={@live_action}
+    user={@user}
+    patch={~p"/users"}
+  />
+</.modal>

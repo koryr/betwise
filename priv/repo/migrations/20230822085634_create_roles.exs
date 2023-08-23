@@ -10,5 +10,6 @@ defmodule Betwise.Repo.Migrations.CreateRoles do
 
       timestamps()
     end
+
   end
 end

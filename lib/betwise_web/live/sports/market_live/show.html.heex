@@ -1,0 +1,26 @@
+<.header>
+  Market <%= @market.id %>
+  <:subtitle>This is a market record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/sports/markets/#{@market}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit market</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Odds"><%= @market.odds %></:item>
+</.list>
+
+<.back navigate={~p"/sports/markets"}>Back to markets</.back>
+
+<.modal :if={@live_action == :edit} id="market-modal" show on_cancel={JS.patch(~p"/sports/markets/#{@market}")}>
+  <.live_component
+    module={BetwiseWeb.Sports.MarketLive.FormComponent}
+    id={@market.id}
+    title={@page_title}
+    action={@live_action}
+    market={@market}
+    patch={~p"/sports/markets/#{@market}"}
+  />
+</.modal>

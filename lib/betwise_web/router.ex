@@ -1,5 +1,5 @@
 defmodule BetwiseWeb.Router do
-  alias BetwiseWeb.UserLive.SysUsers
+  alias BetwiseWeb.UserLive.Profile
   alias BetwiseWeb.DashboardLive
   use BetwiseWeb, :router
 
@@ -78,7 +78,6 @@ defmodule BetwiseWeb.Router do
       on_mount: [{BetwiseWeb.Auth.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
-
     end
   end
 
@@ -108,12 +107,71 @@ defmodule BetwiseWeb.Router do
     end
   end
 
-  scope "/users" do
+  scope "/users", BetwiseWeb, as: :users do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :users,
       on_mount: [{BetwiseWeb.Auth.UserAuth, :mount_current_user}] do
-      live "/", BetwiseWeb.UserLive.SysUsers
+      live "/", UserLive.SysUsers, :index
+      live "/new", UserLive.SysUsers, :new
+      live "/:id", UserLive.Show, :show
+      live "/:id/show/edit", UserLive.Show, :edit
+      live "/p/:email", Profile
     end
   end
+
+  scope "/sports", BetwiseWeb.Sports, as: :sports do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :sports,
+      on_mount: [{BetwiseWeb.Auth.UserAuth, :mount_current_user}] do
+      live "/sport-types", SportTypeLive.Index, :index
+      live "/sport-types/new", SportTypeLive.Index, :new
+      live "/sport-types/:id/edit", SportTypeLive.Index, :edit
+
+      live "/sport-types/:id", SportTypeLive.Show, :show
+      live "/sport-types/:id/show/edit", SportTypeLive.Show, :edit
+
+      live "/teams", TeamLive.Index, :index
+      live "/teams/new", TeamLive.Index, :new
+      live "/teams/:id/edit", TeamLive.Index, :edit
+
+      live "/teams/:id", TeamLive.Show, :show
+      live "/teams/:id/show/edit", TeamLive.Show, :edit
+
+
+      live "/bet_types", BetTypeLive.Index, :index
+      live "/bet_types/new", BetTypeLive.Index, :new
+      live "/bet_types/:id/edit", BetTypeLive.Index, :edit
+
+      live "/bet_types/:id", BetTypeLive.Show, :show
+      live "/bet_types/:id/show/edit", BetTypeLive.Show, :edit
+
+
+      live "/games", GameLive.Index, :index
+      live "/games/new", GameLive.Index, :new
+      live "/games/:id/edit", GameLive.Index, :edit
+
+      live "/games/:id", GameLive.Show, :show
+      live "/games/:id/show/edit", GameLive.Show, :edit
+
+      live "/selections", SelectionLive.Index, :index
+      live "/selections/new", SelectionLive.Index, :new
+      live "/selections/:id/edit", SelectionLive.Index, :edit
+
+      live "/selections/:id", SelectionLive.Show, :show
+      live "/selections/:id/show/edit", SelectionLive.Show, :edit
+
+
+      live "/markets", MarketLive.Index, :index
+      live "/markets/new", MarketLive.Index, :new
+      live "/markets/:id/edit", MarketLive.Index, :edit
+
+      live "/markets/:id", MarketLive.Show, :show
+      live "/markets/:id/show/edit", MarketLive.Show, :edit
+
+    end
+  end
+
+
 end

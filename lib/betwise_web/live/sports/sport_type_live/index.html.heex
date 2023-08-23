@@ -1,0 +1,41 @@
+<.header>
+  Listing Sport type
+  <:actions>
+    <.link patch={~p"/sports/sport-types/new"}>
+      <.button>New Sport type</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="sport_type"
+  rows={@streams.sport_type_collection}
+  row_click={fn {_id, sport_type} -> JS.navigate(~p"/sports/sport-types/#{sport_type}") end}
+>
+  <:col :let={{_id, sport_type}} label="Sport name"><%= sport_type.sport_name %></:col>
+  <:action :let={{_id, sport_type}}>
+    <div class="sr-only">
+      <.link navigate={~p"/sports/sport-types/#{sport_type}"}>Show</.link>
+    </div>
+    <.link patch={~p"/sports/sport-types/#{sport_type}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, sport_type}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: sport_type.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="sport_type-modal" show on_cancel={JS.patch(~p"/sports/sport-types")}>
+  <.live_component
+    module={BetwiseWeb.Sports.SportTypeLive.FormComponent}
+    id={@sport_type.id || :new}
+    title={@page_title}
+    action={@live_action}
+    sport_type={@sport_type}
+    patch={~p"/sports/sport-types"}
+  />
+</.modal>

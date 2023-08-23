@@ -4,7 +4,9 @@ defmodule Betwise.Accounts.Permissions do
   def all() do
     %{
       "roles" => ["create", "read", "update", "delete"],
-      "users" => ["create", "read", "update", "delete"]
+      "users" => ["create", "read", "update", "delete"],
+      "sport_type" => ["create", "read", "update", "delete"],
+      "bet_type" => ["create", "read", "update", "delete"]
     }
   end
 
@@ -32,5 +34,10 @@ defmodule Betwise.Accounts.Permissions do
   defp actions_valid?(permission_name, given_actions, permissions) when is_list(given_actions) do
     defined_actions = Map.get(permissions, permission_name)
     Enum.all?(given_actions, &(&1 in defined_actions))
+  end
+
+  def user_has_permission?(user, permission) do
+    has_permission?(user.role.permissions, permission) ||
+      has_permission?(user.custom_permissions, permission)
   end
 end

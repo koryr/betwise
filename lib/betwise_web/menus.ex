@@ -6,6 +6,11 @@ defmodule BetwiseWeb.Menus do
       build_menu(
         [
           :dashboard,
+          :sport_types,
+          :teams,
+          :bet_types,
+          :games,
+          :selections,
           :users,
           :roles
         ],
@@ -32,7 +37,7 @@ defmodule BetwiseWeb.Menus do
       name: :dashboard,
       label: "Dashboard",
       path: ~p"/",
-      icon: :clipboard_list
+      icon: "hero-home"
     }
   end
 
@@ -41,7 +46,16 @@ defmodule BetwiseWeb.Menus do
       name: :roles,
       label: "Roles",
       path: ~p"/auth/roles",
-      icon: :clipboard_list
+      icon: "hero-tag"
+    }
+  end
+
+  def get_link(:sport_types, _current_user) do
+    %{
+      name: :sport_types,
+      label: "Sport Type",
+      path: ~p"/sports/sport-types",
+      icon: "hero-cube-transparent"
     }
   end
 
@@ -50,7 +64,7 @@ defmodule BetwiseWeb.Menus do
       name: :users,
       label: "Users",
       path: ~p"/users",
-      icon: :clipboard_list
+      icon: "hero-users"
     }
   end
 
@@ -58,8 +72,8 @@ defmodule BetwiseWeb.Menus do
     %{
       name: :profile,
       label: "Profile",
-      path: ~p"/#{current_user.email}",
-      icon: :user
+      path: ~p"/users/p/#{current_user.email}",
+      icon: "hero-user"
     }
   end
 
@@ -68,7 +82,7 @@ defmodule BetwiseWeb.Menus do
       name: :settings,
       label: "Settings",
       path: ~p"/auth/users/settings",
-      icon: :clipboard_list
+      icon: "hero-cog-8-tooth"
     }
   end
 
@@ -78,7 +92,44 @@ defmodule BetwiseWeb.Menus do
       label: "Logout",
       path: ~p"/auth/users/log_out",
       method: "delete",
-      icon: :clipboard_list
+      icon: "hero-arrow-left-on-rectangle"
+    }
+  end
+
+
+  def get_link(:teams, _current_user) do
+    %{
+      name: :teams,
+      label: "Teams",
+      path: ~p"/sports/teams",
+      icon: "hero-cube-transparent"
+    }
+  end
+
+  def get_link(:bet_types, _current_user) do
+    %{
+      name: :bet_types,
+      label: "Bet Types",
+      path: ~p"/sports/bet_types",
+      icon: "hero-cube-transparent"
+    }
+  end
+
+  def get_link(:games, _current_user) do
+    %{
+      name: :games,
+      label: "Sport Games",
+      path: ~p"/sports/games",
+      icon: "hero-cube-transparent"
+    }
+  end
+
+  def get_link(:selections, _current_user) do
+    %{
+      name: :selections,
+      label: "Bet Selection",
+      path: ~p"/sports/selections",
+      icon: "hero-cube-transparent"
     }
   end
 end

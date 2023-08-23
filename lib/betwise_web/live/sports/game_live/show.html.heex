@@ -1,0 +1,29 @@
+<.header>
+  Game <%= @game.id %>
+  <:subtitle>This is a game record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/sports/games/#{@game}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit game</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Date from"><%= @game.date_from %></:item>
+  <:item title="Time from"><%= @game.time_from %></:item>
+  <:item title="Date to"><%= @game.date_to %></:item>
+  <:item title="Time to"><%= @game.time_to %></:item>
+</.list>
+
+<.back navigate={~p"/sports/games"}>Back to games</.back>
+
+<.modal :if={@live_action == :edit} id="game-modal" show on_cancel={JS.patch(~p"/sports/games/#{@game}")}>
+  <.live_component
+    module={BetwiseWeb.Sports.GameLive.FormComponent}
+    id={@game.id}
+    title={@page_title}
+    action={@live_action}
+    game={@game}
+    patch={~p"/sports/games/#{@game}"}
+  />
+</.modal>
