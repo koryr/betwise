@@ -11,5 +11,7 @@ defmodule Betwise.Repo.Migrations.CreateRoles do
       timestamps()
     end
 
+    create unique_index(:roles, [:role_name, :role_display_name])
+
   end
 end

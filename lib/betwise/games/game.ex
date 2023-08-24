@@ -17,7 +17,7 @@ defmodule Betwise.Games.Game do
   @doc false
   def changeset(game, attrs) do
     game
-    |> cast(attrs, [:date_from, :time_from, :date_to, :time_to])
+    |> cast(attrs, [:sport_type_id,:home_team_id, :away_team_id, :date_from, :time_from, :date_to, :time_to])
     |> validate_required([:date_from, :time_from, :date_to, :time_to])
   end
 end

@@ -2,6 +2,8 @@ defmodule BetwiseWeb.Sports.GameLive.FormComponent do
   use BetwiseWeb, :live_component
 
   alias Betwise.Games
+  alias Betwise.Sports
+  alias Betwise.Teams
 
   @impl true
   def render(assigns) do
@@ -9,7 +11,7 @@ defmodule BetwiseWeb.Sports.GameLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage game records in your database.</:subtitle>
+        <:subtitle>Add Game.</:subtitle>
       </.header>
 
       <.simple_form
@@ -19,6 +21,24 @@ defmodule BetwiseWeb.Sports.GameLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
+        <.input
+          field={@form[:sport_type_id]}
+          type="select"
+          label="Sport Type"
+          options={Enum.map(@sportTypes, fn sportType -> {sportType.sport_name, sportType.id} end)}
+        />
+        <.input
+          field={@form[:home_team_id]}
+          type="select"
+          label="Team"
+          options={Enum.map(@teams, fn team -> {team.team_name, team.id} end)}
+        />
+        <.input
+          field={@form[:away_team_id]}
+          type="select"
+          label="Team"
+          options={Enum.map(@teams, fn team -> {team.team_name, team.id} end)}
+        />
         <.input field={@form[:date_from]} type="date" label="Date from" />
         <.input field={@form[:time_from]} type="time" label="Time from" />
         <.input field={@form[:date_to]} type="date" label="Date to" />
@@ -38,7 +58,9 @@ defmodule BetwiseWeb.Sports.GameLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_form(changeset)}
+     |> assign_form(changeset)
+     |> assign(:sportTypes, Sports.list_sport_type())
+     |> assign(:teams, Teams.list_teams())}
   end
 
   @impl true

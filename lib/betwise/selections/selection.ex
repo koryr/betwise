@@ -12,7 +12,7 @@ defmodule Betwise.Selections.Selection do
   @doc false
   def changeset(selection, attrs) do
     selection
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :bet_type_id])
+    |> validate_required([:name, :bet_type_id])
   end
 end

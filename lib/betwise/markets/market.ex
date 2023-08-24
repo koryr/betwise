@@ -14,7 +14,7 @@ defmodule Betwise.Markets.Market do
   @doc false
   def changeset(market, attrs) do
     market
-    |> cast(attrs, [:odds,:game, :bet_type, :user])
+    |> cast(attrs, [:odds,:game_id, :bet_type_id, :user_id])
     |> validate_required([:odds])
   end
 end

@@ -12,6 +12,21 @@
   rows={@streams.games}
   row_click={fn {_id, game} -> JS.navigate(~p"/sports/games/#{game}") end}
 >
+  <:col :let={{_id, game}} label="Sport Type">
+    <%= unless is_nil(game.sport_type) do %>
+      <%= game.sport_type.sport_name %>
+    <% end %>
+  </:col>
+  <:col :let={{_id, game}} label="Teams">
+    <%= unless is_nil(game.home_team) do %>
+      <%= game.home_team.team_name %> Vs
+    <% end %>
+    
+    <%= unless is_nil(game.away_team) do %>
+      <%= game.away_team.team_name %>
+    <% end %>
+  </:col>
+
   <:col :let={{_id, game}} label="Date from"><%= game.date_from %></:col>
   <:col :let={{_id, game}} label="Time from"><%= game.time_from %></:col>
   <:col :let={{_id, game}} label="Date to"><%= game.date_to %></:col>
@@ -32,7 +47,12 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="game-modal" show on_cancel={JS.patch(~p"/sports/games")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="game-modal"
+  show
+  on_cancel={JS.patch(~p"/sports/games")}
+>
   <.live_component
     module={BetwiseWeb.Sports.GameLive.FormComponent}
     id={@game.id || :new}

@@ -19,6 +19,7 @@ defmodule Betwise.Selections do
   """
   def list_selections do
     Repo.all(Selection)
+    |>Repo.preload([:bet_type])
   end
 
   @doc """
@@ -100,5 +101,15 @@ defmodule Betwise.Selections do
   """
   def change_selection(%Selection{} = selection, attrs \\ %{}) do
     Selection.changeset(selection, attrs)
+  end
+
+  @doc """
+  get select by bet type
+  """
+
+  def get_selections_by_bet_type!(id) do
+    from(s in Selection, where: [bet_type_id: ^id], order_by: [asc: :id])
+    |> Repo.all()
+
   end
 end

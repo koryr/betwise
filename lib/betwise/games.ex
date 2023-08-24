@@ -4,6 +4,7 @@ defmodule Betwise.Games do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Query.Builder.Preload
   alias Betwise.Repo
 
   alias Betwise.Games.Game
@@ -18,7 +19,7 @@ defmodule Betwise.Games do
 
   """
   def list_games do
-    Repo.all(Game)
+    Repo.all(Game) |> Repo.preload([:sport_type, :home_team, :away_team])
   end
 
   @doc """
@@ -35,7 +36,7 @@ defmodule Betwise.Games do
       ** (Ecto.NoResultsError)
 
   """
-  def get_game!(id), do: Repo.get!(Game, id)
+  def get_game!(id), do: Repo.get!(Game, id)|> Repo.preload([:sport_type, :home_team, :away_team])
 
   @doc """
   Creates a game.

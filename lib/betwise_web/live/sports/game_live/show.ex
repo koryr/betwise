@@ -2,6 +2,7 @@ defmodule BetwiseWeb.Sports.GameLive.Show do
   use BetwiseWeb, :live_view
 
   alias Betwise.Games
+  alias Betwise.Markets.Market
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,7 +14,9 @@ defmodule BetwiseWeb.Sports.GameLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:game, Games.get_game!(id))}
+     |> assign(:game, Games.get_game!(id))
+     |> assign(:market, %Market{})
+    }
   end
 
   defp page_title(:show), do: "Show Game"
