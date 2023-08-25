@@ -247,6 +247,11 @@ defmodule Betwise.Accounts do
     :ok
   end
 
+
+  def delete_user(%User{} = user) do
+    Repo.delete(user)
+  end
+
   ## Confirmation
 
   @doc ~S"""

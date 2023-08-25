@@ -4,6 +4,7 @@ defmodule Betwise.BetTypes.BetType do
 
   schema "bet_types" do
     field :bet_type_name, :string
+    has_many(:selections, Betwise.Selections.Selection)
 
     timestamps()
   end

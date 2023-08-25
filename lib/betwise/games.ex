@@ -36,7 +36,10 @@ defmodule Betwise.Games do
       ** (Ecto.NoResultsError)
 
   """
-  def get_game!(id), do: Repo.get!(Game, id)|> Repo.preload([:sport_type, :home_team, :away_team])
+  def get_game!(id),
+    do:
+      Repo.get!(Game, id)
+      |> Repo.preload([:sport_type, :home_team, :away_team, markets: [bet_type: [:selections]]])
 
   @doc """
   Creates a game.

@@ -1,0 +1,21 @@
+<.header>
+  Sports Highlights
+  <:subtitle>
+    Bet on today Sports Highlights
+  </:subtitle>
+  <.table id="highlights" rows={@streams.games}>
+    <:col :let={{_id, game}} label="Date"><%= game.date_from %> <%= game.time_from %></:col>
+    <:col :let={{_id, game}} label="Game">
+      <%= unless is_nil(game.home_team) do %>
+        <%= game.home_team.team_name %> Vs
+      <% end %>
+
+      <%= unless is_nil(game.away_team) do %>
+        <%= game.away_team.team_name %>
+      <% end %>
+    </:col>
+    <:col></:col>
+
+
+  </.table>
+</.header>

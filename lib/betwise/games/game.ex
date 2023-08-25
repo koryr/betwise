@@ -10,6 +10,7 @@ defmodule Betwise.Games.Game do
     belongs_to(:sport_type, Betwise.Sports.SportType)
     belongs_to(:home_team, Betwise.Teams.Team)
     belongs_to(:away_team, Betwise.Teams.Team)
+    has_many(:markets, Betwise.Markets.Market)
 
     timestamps()
   end

@@ -13,6 +13,17 @@
   row_click={fn {_id, user} -> JS.navigate(~p"/users/#{user}") end}
 >
   <:col :let={{_id, user}} label="First Name"><%= user.first_name %></:col>
+  <:col :let={{_id, user}} label="Last Name"><%= user.last_name %></:col>
+  <:col :let={{_id, user}} label="Email address"><%= user.email %></:col>
+  <:col :let={{_id, user}} label="MSISDN"><%= user.msisdn %></:col>
+  <:action :let={{id, user}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: user.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
 </.table>
 
 <.modal :if={@live_action in [:new, :edit]} id="user-modal" show on_cancel={JS.patch(~p"/users")}>

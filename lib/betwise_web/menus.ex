@@ -6,6 +6,7 @@ defmodule BetwiseWeb.Menus do
       build_menu(
         [
           :dashboard,
+          :highlights,
           :sport_types,
           :teams,
           :bet_types,
@@ -129,6 +130,15 @@ defmodule BetwiseWeb.Menus do
       name: :selections,
       label: "Bet Selection",
       path: ~p"/sports/selections",
+      icon: "hero-cube-transparent"
+    }
+  end
+
+  def get_link(:highlights, _current_user) do
+    %{
+      name: :highlights,
+      label: "Sports Highlights",
+      path: ~p"/sports/highlights",
       icon: "hero-cube-transparent"
     }
   end

@@ -18,7 +18,7 @@ defmodule Betwise.BetTypes do
 
   """
   def list_bet_types do
-    Repo.all(BetType)
+    Repo.all(BetType)|>Repo.preload(selections: [:bet_type])
   end
 
   @doc """
