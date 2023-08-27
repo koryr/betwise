@@ -19,7 +19,7 @@ defmodule Betwise.Markets do
   """
   def list_markets do
     Repo.all(Market)
-    |> Repo.preload([:bet_type])
+    |> Repo.preload([bet_type: [:selections], game: [:home_team,:away_team]])
   end
 
   @doc """

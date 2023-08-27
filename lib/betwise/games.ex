@@ -19,7 +19,8 @@ defmodule Betwise.Games do
 
   """
   def list_games do
-    Repo.all(Game) |> Repo.preload([:sport_type, :home_team, :away_team])
+    Repo.all(Game)
+    |> Repo.preload([:sport_type, :home_team, :away_team, markets: [bet_type: [:selections]]])
   end
 
   @doc """

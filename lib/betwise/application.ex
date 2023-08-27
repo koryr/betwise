@@ -17,7 +17,8 @@ defmodule Betwise.Application do
       # Start Finch
       {Finch, name: Betwise.Finch},
       # Start the Endpoint (http/https)
-      BetwiseWeb.Endpoint
+      BetwiseWeb.Endpoint,
+      {Betwise.PlaceBetSup, name: Betwise.PlaceBetSup}
       # Start a worker by calling: Betwise.Worker.start_link(arg)
       # {Betwise.Worker, arg}
     ]
