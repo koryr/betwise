@@ -10,6 +10,6 @@ defmodule Betwise.Repo.Migrations.CreateSelections do
     end
 
     create index(:selections, [:bet_type_id])
-    create unique_index(:roles, [:bet_type_id, :name])
+    create unique_index(:selections, [:bet_type_id, :name])
   end
 end

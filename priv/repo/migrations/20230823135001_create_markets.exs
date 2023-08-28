@@ -14,5 +14,6 @@ defmodule Betwise.Repo.Migrations.CreateMarkets do
     create index(:markets, [:game_id])
     create index(:markets, [:bet_type_id])
     create index(:markets, [:user_id])
+    create unique_index(:markets, [:game_id, :bet_type_id])
   end
 end

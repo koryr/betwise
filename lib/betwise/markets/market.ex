@@ -11,10 +11,19 @@ defmodule Betwise.Markets.Market do
     timestamps()
   end
 
+  @spec changeset(
+          {map, map}
+          | %{
+              :__struct__ => atom | %{:__changeset__ => map, optional(any) => any},
+              optional(atom) => any
+            },
+          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
+        ) :: Ecto.Changeset.t()
   @doc false
   def changeset(market, attrs) do
     market
     |> cast(attrs, [:odds,:game_id, :bet_type_id, :user_id])
     |> validate_required([:odds])
+    |> unique_constraint([:game_id, :bet_type_id])
   end
 end

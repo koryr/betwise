@@ -4,7 +4,6 @@ defmodule Betwise.Games do
   """
 
   import Ecto.Query, warn: false
-  alias Ecto.Query.Builder.Preload
   alias Betwise.Repo
 
   alias Betwise.Games.Game
@@ -58,6 +57,7 @@ defmodule Betwise.Games do
     %Game{}
     |> Game.changeset(attrs)
     |> Repo.insert()
+    # |> Repo.preload([:sport_type, :home_team, :away_team, markets: [bet_type: [:selections]]])
   end
 
   @doc """

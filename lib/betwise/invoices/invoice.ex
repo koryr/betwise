@@ -4,6 +4,7 @@ defmodule Betwise.Invoices.Invoice do
 
   schema "invoices" do
     field :bet_amount, :decimal
+    field :total_odds, :decimal
     field :status, :boolean, default: false
     belongs_to(:user, Betwise.Accounts.User)
 
@@ -13,7 +14,7 @@ defmodule Betwise.Invoices.Invoice do
   @doc false
   def changeset(invoice, attrs) do
     invoice
-    |> cast(attrs, [:bet_amount, :status,:user_id])
+    |> cast(attrs, [:bet_amount, :total_odds, :status, :user_id])
     |> validate_required([:bet_amount, :status])
   end
 end

@@ -19,7 +19,7 @@ defmodule BetwiseWeb.Auth.RoleLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:role_diplay_name]} type="text" label="Role Display name" />
+        <.input field={@form[:role_display_name]} type="text" label="Role Display name" />
         <.input field={@form[:role_name]} type="text" label="Role name" />
         <.input field={@form[:description]} type="text" label="Description" />
         <:actions>

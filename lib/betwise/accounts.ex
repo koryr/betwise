@@ -10,9 +10,8 @@ defmodule Betwise.Accounts do
 
   ## Database getters
 
-
   def list_users do
-    Repo.all(User)
+    Repo.all(User) |> Repo.preload([:role])
   end
 
   @doc """
@@ -28,7 +27,7 @@ defmodule Betwise.Accounts do
 
   """
   def get_user_by_email(email) when is_binary(email) do
-    Repo.get_by(User, email: email)
+    Repo.get_by(User, email: email) |> Repo.preload([:role])
   end
 
   @doc """
@@ -45,7 +44,7 @@ defmodule Betwise.Accounts do
   """
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
-    user = Repo.get_by(User, email: email)
+    user = Repo.get_by(User, email: email)|> Repo.preload([:role])
     if User.valid_password?(user, password), do: user
   end
 
@@ -63,7 +62,7 @@ defmodule Betwise.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id), do: Repo.get!(User, id) |> Repo.preload([:role])
 
   ## User registration
 
@@ -236,7 +235,7 @@ defmodule Betwise.Accounts do
   """
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
-    Repo.one(query)
+    Repo.one(query)|> Repo.preload([:role])
   end
 
   @doc """
@@ -246,7 +245,6 @@ defmodule Betwise.Accounts do
     Repo.delete_all(UserToken.token_and_context_query(token, "session"))
     :ok
   end
-
 
   def delete_user(%User{} = user) do
     Repo.delete(user)
@@ -373,7 +371,10 @@ defmodule Betwise.Accounts do
 
   """
   def list_roles do
-    Repo.all(Role)
+    query = from r in Role,
+          where: r.role_name != "superuser",
+          select: r
+    Repo.all(query)
   end
 
   @doc """
@@ -456,7 +457,6 @@ defmodule Betwise.Accounts do
   def change_role(%Role{} = role, attrs \\ %{}) do
     Role.changeset(role, attrs)
   end
-
 
   def get_role_by_name(role_name) when is_binary(role_name) do
     Repo.get_by(Role, role_name: role_name)

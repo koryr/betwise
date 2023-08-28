@@ -16,13 +16,16 @@
   <:col :let={{_id, user}} label="Last Name"><%= user.last_name %></:col>
   <:col :let={{_id, user}} label="Email address"><%= user.email %></:col>
   <:col :let={{_id, user}} label="MSISDN"><%= user.msisdn %></:col>
+  <:col :let={{_id, user}} label="Role"><%= user.role.role_display_name %></:col>
   <:action :let={{id, user}}>
-    <.link
-      phx-click={JS.push("delete", value: %{id: user.id}) |> hide("##{id}")}
-      data-confirm="Are you sure?"
-    >
-      Delete
-    </.link>
+    <%= if @current_user.id != user.id do %>
+      <.link
+        phx-click={JS.push("delete", value: %{id: user.id}) |> hide("##{id}")}
+        data-confirm="Are you sure?"
+      >
+        Delete
+      </.link>
+    <% end %>
   </:action>
 </.table>
 

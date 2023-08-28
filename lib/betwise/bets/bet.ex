@@ -3,7 +3,7 @@ defmodule Betwise.Bets.Bet do
   import Ecto.Changeset
 
   schema "bets" do
-    field :bet_amount, :decimal
+    field :status, :boolean
     field :odds, :decimal
     belongs_to(:game, Betwise.Games.Game)
     belongs_to(:bet_type, Betwise.BetTypes.BetType)
@@ -17,7 +17,7 @@ defmodule Betwise.Bets.Bet do
   @doc false
   def changeset(bet, attrs) do
     bet
-    |> cast(attrs, [:odds, :bet_amount, :game_id, :selection_id, :bet_type_id, :invoice_id])
-    |> validate_required([:odds, :bet_amount])
+    |> cast(attrs, [:odds, :status, :game_id, :selection_id, :user_id, :invoice_id])
+    |> validate_required([:odds, :game_id, :user_id])
   end
 end

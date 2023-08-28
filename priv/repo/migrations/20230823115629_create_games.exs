@@ -7,6 +7,9 @@ defmodule Betwise.Repo.Migrations.CreateGames do
       add :time_from, :time
       add :date_to, :date
       add :time_to, :time
+      add :home, :integer
+      add :away, :integer
+      add :full_time, :boolean, deault: false
       add :sport_type_id, references(:sport_types, on_delete: :nothing)
       add :home_team_id, references(:teams, on_delete: :nothing)
       add :away_team_id, references(:teams, on_delete: :nothing)

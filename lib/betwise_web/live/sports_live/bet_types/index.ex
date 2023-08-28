@@ -33,7 +33,7 @@ defmodule BetwiseWeb.SportsLive.BetTypes.Index do
   end
 
   @impl true
-  def handle_info({BetwiseWeb.Sports.BetTypeLive.FormComponent, {:saved, bet_type}}, socket) do
+  def handle_info({BetwiseWeb.SportsLive.BetTypes.FormComponent, {:saved, bet_type}}, socket) do
     {:noreply, stream_insert(socket, :bet_types, bet_type)}
   end
 

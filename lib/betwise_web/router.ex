@@ -1,4 +1,5 @@
 defmodule BetwiseWeb.Router do
+
   alias BetwiseWeb.UserLive.Profile
   alias BetwiseWeb.DashboardLive
   use BetwiseWeb, :router
@@ -171,6 +172,8 @@ defmodule BetwiseWeb.Router do
       live "/markets/:id/show/edit", Markets.Show, :edit
 
       live "/highlights", Highlights, :index
+
+      live "/bets", PlacedBets, :index
 
     end
   end

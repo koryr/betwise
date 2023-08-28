@@ -11,8 +11,8 @@
 <.list>
   <:item title="First name"><%= @user.first_name %></:item>
   <:item title="Last name"><%= @user.last_name %></:item>
-  <:item title="Email"><%= @user.email %>
-  </:item>
+  <:item title="Email"><%= @user.email %> </:item>
+  <:item title="Role"><%= @user.role.role_display_name %></:item>
 </.list>
 
 <.modal

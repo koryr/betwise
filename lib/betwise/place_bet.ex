@@ -115,9 +115,11 @@ defmodule Betwise.PlaceBet do
       {:ok, invoice} ->
         Enum.map(bets, fn bet ->
           %{
+            "odds"=> bet.odds,
             "game_id" => bet.game_id,
             "selection_id" => bet.selection_id,
-            "invoice_id" => invoice.id
+            "invoice_id" => invoice.id,
+            "user_id" => user_id
           }
           |> Bets.create_bet()
         end)
@@ -129,7 +131,6 @@ defmodule Betwise.PlaceBet do
     end
 
     IO.inspect("bets#{inspect(bets)}")
-    IO.inspect("userd#{inspect(user_id)}")
 
     {:noreply, state}
   end

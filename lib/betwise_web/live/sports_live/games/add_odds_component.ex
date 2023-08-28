@@ -25,11 +25,12 @@ defmodule BetwiseWeb.SportsLive.Games.AddOddsComponent do
 
       <div style={if @open, do: "display:block", else: "display:none"}>
         <.simple_form for={@form} phx-target={@myself} phx-submit="save-odds">
-        <.input type="hidden" field={@form[:game_id]} value={@game_id}/>
+          <.input type="hidden" field={@form[:game_id]} value={@game_id} />
           <.input
             field={@form[:bet_type_id]}
             phx-target={@myself}
             type="select"
+            prompt="Choose an option"
             options={Enum.map(@bet_types, fn type -> {type.bet_type_name, type.id} end)}
             phx-change="onchange-bet-type"
             label="Bet Type"
@@ -90,7 +91,26 @@ defmodule BetwiseWeb.SportsLive.Games.AddOddsComponent do
 
     market = market |> Map.put("user_id", user.id)
 
-    Markets.create_market(market)
+    socket =
+      case Markets.create_market(market) do
+        {:ok, market} ->
+          notify_parent({:saved, market})
+
+          socket
+          |> put_flash(:info, "Odds Added successfully")
+
+        {:error, error} ->
+          IO.inspect("Odds no added#{inspect(error)}")
+
+          socket
+          |> put_flash(:error, "Odds not Added ")
+          |> redirect(to: socket.view.module_url(socket, :index))
+
+          socket
+      end
+
     {:noreply, socket}
   end
+
+  defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 end

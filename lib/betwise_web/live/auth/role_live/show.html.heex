@@ -9,12 +9,22 @@
 </.header>
 
 <.list>
+  <:item title="Role Display Name"><%= @role.role_display_name %></:item>
   <:item title="Role name"><%= @role.role_name %></:item>
   <:item title="Description"><%= @role.description %></:item>
   <:item title="Permissions">
-    <% Enum.each(@role.permissions, fn {key, value} ->
-      "#{key}#{value}"
-    end) %>
+    <%= Enum.map(@role.permissions, fn {key, value} -> %>
+      <h6 class="text-sm font-semibold leading-6 text-gray-900"><%= key %>:</h6>
+      
+        <div class="flex space-x-4">
+          <%= Enum.map(value, fn v -> %>
+            <div class="flex-auto">
+              <%= v %>
+            </div>
+          <% end) %>
+        </div>
+     
+    <% end) %>
   </:item>
 </.list>
 

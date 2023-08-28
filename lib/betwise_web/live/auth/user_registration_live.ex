@@ -30,8 +30,11 @@ defmodule BetwiseWeb.Auth.UserRegistrationLive do
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
         </.error>
-
+        <.input field={@form[:first_name]} type="text" label="First Name" />
+        <.input field={@form[:last_name]} type="text" label="Last Name" />
+        <.input field={@form[:msisdn]} type="text" label="MSISDN" />
         <.input field={@form[:email]} type="email" label="Email" required />
+
         <.input field={@form[:password]} type="password" label="Password" required />
 
         <:actions>
@@ -50,11 +53,25 @@ defmodule BetwiseWeb.Auth.UserRegistrationLive do
       |> assign(trigger_submit: false, check_errors: false)
       |> assign_form(changeset)
 
-    {:ok, socket, temporary_assigns: [form: nil],layout: false}
+    {:ok, socket, temporary_assigns: [form: nil], layout: false}
   end
 
   def handle_event("save", %{"user" => user_params}, socket) do
-    case Accounts.register_user(user_params) do
+    IO.inspect(Map.has_key?(user_params, "role_id"))
+
+    params =
+      case Map.has_key?(user_params, "role_id") do
+        false ->
+          case Accounts.get_role_by_name("user") do
+            role ->
+              Map.put(user_params, "role_id", role.id)
+          end
+
+        true ->
+          user_params
+      end
+
+    case Accounts.register_user(params) do
       {:ok, user} ->
         {:ok, _} =
           Accounts.deliver_user_confirmation_instructions(
@@ -68,6 +85,7 @@ defmodule BetwiseWeb.Auth.UserRegistrationLive do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
     end
+
   end
 
   def handle_event("validate", %{"user" => user_params}, socket) do

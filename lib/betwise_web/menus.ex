@@ -1,19 +1,43 @@
 defmodule BetwiseWeb.Menus do
+  alias Betwise.Accounts.Permissions
   use BetwiseWeb, :html
 
   def main_menu_items(current_user),
     do:
       build_menu(
         [
-          :dashboard,
-          :highlights,
-          :sport_types,
-          :teams,
-          :bet_types,
-          :games,
-          :selections,
-          :users,
-          :roles
+
+          if Permissions.user_has_permission?(current_user, {"roles", ["read"]}) do
+            :dashboard
+          end,
+          if Permissions.user_has_permission?(current_user, {"highlights", ["read"]}) do
+            :highlights
+          end,
+          if Permissions.user_has_permission?(current_user, {"bets", ["read"]}) do
+            :bets
+          end,
+          if Permissions.user_has_permission?(current_user, {"games", ["read"]}) do
+            :games
+          end,
+          if Permissions.user_has_permission?(current_user, {"sport_types", ["read"]}) do
+            :sport_types
+          end,
+          if Permissions.user_has_permission?(current_user, {"teams", ["read"]}) do
+            :teams
+          end,
+          if Permissions.user_has_permission?(current_user, {"bet_types", ["read"]}) do
+            :bet_types
+          end,
+
+          if Permissions.user_has_permission?(current_user, {"selections", ["read"]}) do
+            :selections
+          end,
+          if Permissions.user_has_permission?(current_user, {"users", ["read"]}) do
+            :users
+          end,
+          if Permissions.user_has_permission?(current_user, {"roles", ["read"]}) do
+            :roles
+          end
         ],
         current_user
       )
@@ -30,7 +54,7 @@ defmodule BetwiseWeb.Menus do
       )
 
   def build_menu(links, current_user) do
-    Enum.map(links, fn link -> get_link(link, current_user) end)
+    Enum.map(links, fn link  -> if !is_nil(link) do get_link(link, current_user)end end)
   end
 
   def get_link(:dashboard, _current_user) do
@@ -97,7 +121,6 @@ defmodule BetwiseWeb.Menus do
     }
   end
 
-
   def get_link(:teams, _current_user) do
     %{
       name: :teams,
@@ -139,6 +162,15 @@ defmodule BetwiseWeb.Menus do
       name: :highlights,
       label: "Sports Highlights",
       path: ~p"/sports/highlights",
+      icon: "hero-cube-transparent"
+    }
+  end
+
+  def get_link(:bets, _current_user) do
+    %{
+      name: :highlights,
+      label: "Bets",
+      path: ~p"/sports/bets",
       icon: "hero-cube-transparent"
     }
   end

@@ -30,13 +30,13 @@ defmodule BetwiseWeb.SportsLive.Games.FormComponent do
         <.input
           field={@form[:home_team_id]}
           type="select"
-          label="Team"
+          label="Home Team"
           options={Enum.map(@teams, fn team -> {team.team_name, team.id} end)}
         />
         <.input
           field={@form[:away_team_id]}
           type="select"
-          label="Team"
+          label="AwayTeam"
           options={Enum.map(@teams, fn team -> {team.team_name, team.id} end)}
         />
         <.input field={@form[:date_from]} type="date" label="Date from" />

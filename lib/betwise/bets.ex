@@ -8,8 +8,8 @@ defmodule Betwise.Bets do
   alias Betwise.Bets.Bet
 
   def list_bets() do
-    Repo.all(Bets)
-    |> Repo.preload([:user])
+    Repo.all(Bet)
+    |> Repo.preload([:user, :selection, game: [:home_team, :away_team]])
   end
 
   def create_bet(attrs \\ %{}) do

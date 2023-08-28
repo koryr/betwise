@@ -27,7 +27,7 @@ defmodule BetwiseWeb.Sidebar do
           <nav>
             <div class="divide-y divide-gray-300">
               <div class="space-y-1">
-                <%= for link <- @menu_items do %>
+                <%= for link <- Enum.filter(@menu_items, & !is_nil(&1)) do %>
                   <%= unless Map.has_key?(link, :menu_items) do %>
                     <.link navigate={link.path} class="flex items-center text-sm font-semibold leading-none px-3 py-2 gap-3 transition duration-200 w-full rounded-md group
                                         text-gray-700 hover:bg-gray-50 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white dark:hover:bg-gray-700 ">

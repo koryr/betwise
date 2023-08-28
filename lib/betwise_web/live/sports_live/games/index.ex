@@ -6,6 +6,7 @@ defmodule BetwiseWeb.SportsLive.Games.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+
     {:ok, stream(socket, :games, Games.list_games())}
   end
 

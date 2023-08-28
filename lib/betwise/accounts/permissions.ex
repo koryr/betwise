@@ -5,8 +5,16 @@ defmodule Betwise.Accounts.Permissions do
     %{
       "roles" => ["create", "read", "update", "delete"],
       "users" => ["create", "read", "update", "delete"],
-      "sport_type" => ["create", "read", "update", "delete"],
-      "bet_type" => ["create", "read", "update", "delete"]
+      "sport_types" => ["create", "read", "update", "delete"],
+      "bet_types" => ["create", "read", "update", "delete"],
+      "bets" => ["create", "read", "update", "delete"],
+      "highlights" => ["create", "read", "update", "delete"],
+      "games" => ["create", "read", "update", "delete"],
+      "teams" => ["create", "read", "update", "delete"],
+      "selections" => ["create", "read", "update", "delete"],
+      "invoices" => ["create", "read", "update", "delete"],
+      "dashboard" => [ "read"],
+      "markets" => ["create", "read", "update", "delete"]
     }
   end
 
