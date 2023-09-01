@@ -27,20 +27,6 @@ defmodule Betwise.Play do
     new_state =
       case Games.get_games(datecreated) do
         games ->
-          # filtered_data =
-          #   Enum.filter(games, fn %{id: _id, time_from: timestamp} ->
-          #     timestamp >= Time.utc_now()
-          #   end)
-
-          # pqs =
-          #   for game <- games do
-          #     time_diff = Time.diff(game.time_from, Time.utc_now(), :minute)
-          #     # :ets.insert(@tab, {game.id, game})
-          #     # pq = PriorityQueue.put(pq, game, time_diff)
-
-          #     IO.inspect(pq)
-          #   end
-
           pqw =
             for game <- games, into: pq do
               PriorityQueue.put(pq, game, Time.diff(game.time_from, Time.utc_now(), :minute))
@@ -55,11 +41,11 @@ defmodule Betwise.Play do
               [] ->
                 Date.utc_today()
             end
-
+            Process.send_after(self(), :play_now, 10_000)
           %{state | pq: pqw, datecreated: latest_game}
       end
 
-    Process.send_after(self(), :play_now, 10_000)
+
     # Schedule the next execution
     # 10 seconds
     Process.send_after(self(), :play_game, 10_000)
@@ -91,48 +77,11 @@ defmodule Betwise.Play do
         []
     end
 
-
-    # new_state =
-    #   case :ets.tab2list(@tab) do
-    #     [{key, game} | _] ->
-    #       time_diff = Time.diff(game.time_from, Time.utc_now(), :minute)
-    #       pq_new = PriorityQueue.put(pq, game, time_diff)
-
-    #       IO.inspect("Game: time before starting to play#{time_diff}")
-
-    #       Task.async(fn ->
-    #         delay_seconds = 60 * time_diff
-    #         IO.puts("Waiting for #{delay_seconds} seconds before starting the priority queue.")
-    #         Task.sleep(1000 * delay_seconds)
-
-    #         case play_game(game, time_diff) do
-    #           {:ok, _pid} ->
-    #             :ets.delete(@tab, key)
-
-    #           {:error, error} ->
-    #             IO.inspect("Error starting:#{inspect(error)}")
-    #         end
-    #       end)
-
-    #       %{state | pq: pq_new}
-
-    #     [] ->
-    #       IO.inspect("Game: not found (Empty table)")
-    #       state
-    #   end
-
     {:noreply, state}
   end
 
   # Start playing game
   defp play_game(game) do
-    # time_diff = Time.diff(game.time_from, Time.utc_now(), :minute)
-
-    # Task.async(fn ->
-    #   delay_seconds = 60 * time_diff
-    #   IO.puts("Waiting for #{delay_seconds} seconds before starting the priority queue.")
-    #   :timer.sleep(1000 * delay_seconds)
-
     case PlayingSup.start_playing(game) do
       {:ok, pid} ->
         IO.puts("#{inspect(pid)}Game started")
@@ -143,7 +92,5 @@ defmodule Betwise.Play do
         IO.inspect("Game start error:#{inspect(error)}")
         {:error, error}
     end
-
-    # end)
   end
 end
