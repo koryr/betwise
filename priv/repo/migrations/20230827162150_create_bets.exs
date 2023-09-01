@@ -4,7 +4,8 @@ defmodule Betwise.Repo.Migrations.CreateBets do
   def change do
     create table(:bets) do
       add :odds, :decimal
-      add :status, :boolean,  default: false
+      add :status, :boolean
+      add :canceled, :boolean, default: false
       add :game_id, references(:games, on_delete: :nothing)
       add :bet_type_id, references(:bet_types, on_delete: :nothing)
       add :selection_id, references(:selections, on_delete: :nothing)
@@ -19,5 +20,6 @@ defmodule Betwise.Repo.Migrations.CreateBets do
     create index(:bets, [:selection_id])
     create index(:bets, [:user_id])
     create index(:bets, [:invoice_id])
+    create unique_index(:bets, [:game_id, :user_id])
   end
 end

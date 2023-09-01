@@ -17,10 +17,10 @@ defmodule BetwiseWeb.SportsLive.Games.AddOddsComponent do
         type="button"
         phx-target={@myself}
         phx-click="add-odds"
-        class="focus:outline-none text-sm  rounded-full py-1.5 px-4 font-semibold  hover:bg-gray-800
+        class="focus:outline-none text-sm bg-red-100 rounded-full py-1.5 px-4 font-semibold  hover:bg-gray-800
       hover:text-white dark:bg-gray-700"
       >
-        <span class="btn">Add Odds</span>
+        <span class="btn ">Add Odds</span>
       </button>
 
       <div style={if @open, do: "display:block", else: "display:none"}>
@@ -45,6 +45,7 @@ defmodule BetwiseWeb.SportsLive.Games.AddOddsComponent do
                 <input
                   class="mt-2 block w-full rounded-lg text-zinc-900 focus:ring-1 sm:text-sm sm:leading-6 "
                   type="number"
+                  step="any"
                   name={"market[odds][#{selection.id}]"}
                 />
               </div>
@@ -88,28 +89,24 @@ defmodule BetwiseWeb.SportsLive.Games.AddOddsComponent do
 
   def handle_event("save-odds", %{"market" => market}, socket) do
     user = socket.assigns.current_user
-
     market = market |> Map.put("user_id", user.id)
 
-    socket =
-      case Markets.create_market(market) do
-        {:ok, market} ->
-          notify_parent({:saved, market})
+    case Markets.create_market(market) do
+      {:ok, market} ->
+        notify_parent({:saved, market})
+        {:noreply,  socket
+        |> put_flash(:info, "Odds Added successfully")
+        |> push_patch(to: socket.assigns.patch)}
 
-          socket
-          |> put_flash(:info, "Odds Added successfully")
+      {:error, error} ->
+        IO.inspect("Odds no added#{inspect(error)}")
 
-        {:error, error} ->
-          IO.inspect("Odds no added#{inspect(error)}")
 
-          socket
-          |> put_flash(:error, "Odds not Added ")
-          |> redirect(to: socket.view.module_url(socket, :index))
-
-          socket
-      end
-
-    {:noreply, socket}
+        {:noreply,
+         socket
+         |> put_flash(:error, "Odds not Added ")
+         |> push_patch(to: socket.assigns.patch)}
+    end
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})

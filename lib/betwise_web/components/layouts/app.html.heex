@@ -6,6 +6,7 @@
         id: "navbar",
         menu_items: BetwiseWeb.Menus.user_menu_items(@current_user)
       ) %>
+      <.flash_group flash={@flash} />
     </:navbar>
     <:sidebar>
     <%= live_component(BetwiseWeb.Sidebar,
@@ -16,7 +17,7 @@
       
         
     </:sidebar>
-     <.flash_group flash={@flash} />
+     
      <%= @inner_content %>
   </.layout>
 </div>

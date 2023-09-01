@@ -7,9 +7,9 @@ defmodule BetwiseWeb.Layout do
 
   def layout(assigns) do
     ~H"""
-    <main>
+    <main >
       <div class="flex h-screen overflow-auto dark:bg-gray-900" x-data="{sidebarOpen: false}">
-        <div class="relative z-40 lg:w-64">
+        <div class="relative  lg:w-64">
           <div
             x-show="sidebarOpen"
             x-transition:enter="transition-opacity ease-linear duration-300"
@@ -24,10 +24,10 @@ defmodule BetwiseWeb.Layout do
           </div>
           <%= render_slot(@sidebar) %>
         </div>
-        <div class="relative flex flex-col flex-1 pb-32 overflow-x-auto overflow-y-auto lg:pb-0">
+        <div class="relative z-50 flex flex-col flex-1 pb-32 overflow-x-auto overflow-y-auto lg:pb-0">
           <%= render_slot(@navbar) %>
-          <div class="pc-container pc-container--lg pc-container--mobile-padded my-8">
-            <div class="mx-auto max-w-7xl pt-4 pb-4 px-4 sm:px-6 lg:px-8 min-h-[776px] overflow-hidden rounded-xl border border-dashed border-gray-400 dark:border-gray-600 opacity-75">
+          <div class="pc-container -z-30 pc-container--lg pc-container--mobile-padded my-8 ">
+            <div class="bg-white -z-30 rounded-xl  shadow-sm text-sm font-medium border1 dark:bg-gray-800 mx-auto max-w-[90%] pt-4 pb-4 px-4 sm:px-6 lg:px-8 min-h-[776px] overflow-hidden rounded-xl border   dark:border-gray-600 opacity-75">
               <%= render_slot(@inner_block) %>
             </div>
           </div>

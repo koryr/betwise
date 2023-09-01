@@ -11,7 +11,6 @@
 <.list>
   <:item title="Role Display Name"><%= @role.role_display_name %></:item>
   <:item title="Role name"><%= @role.role_name %></:item>
-  <:item title="Description"><%= @role.description %></:item>
   <:item title="Permissions">
     <%= Enum.map(@role.permissions, fn {key, value} -> %>
       <h6 class="text-sm font-semibold leading-6 text-gray-900"><%= key %>:</h6>

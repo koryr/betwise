@@ -16,12 +16,13 @@
           </tr>
         </thead>
         <tbody>
+          <% list = @pick_list %>
           <%= for {_id,game} <- @streams.games do %>
             <tr>
               <%!-- <td class="py-2 px-4"><%= game.date_from %> <%= game.time_from %></td> --%>
               <td class="py-2 px-4">
-              <p class="text-sm leading-5 text-gray-500"><%= game.date_from %></p> 
-              <p class="text-sm leading-5 text-gray-500"><%= game.time_from %></p>
+                <p class="text-sm leading-5 text-gray-500"><%= game.date_from %></p>
+                <p class="text-sm leading-5 text-gray-500"><%= game.time_from %></p>
                 <%= unless is_nil(game.home_team) do %>
                   <%= game.home_team.team_name %> Vs
                 <% end %>
@@ -45,6 +46,26 @@
                                     do: selection.name %>
 
                               <p>
+                                <%!-- <%= IO.inspect(@selected_list)%> --%>
+                                <%!-- <%= 
+                               
+
+                               if Enum.member?(
+                                         @selected_list,
+                                         "#{to_string(game.id)<>to_string(key)}"
+                                       ) do
+                                      "!bg-red-500 text-white"
+                                    else
+                                      "bg-gray-800 text-white"
+                                    end
+                                        %> --%>
+                                <%!-- <% "#{to_string(game.id) <> to_string(key)}" in list %> --%>
+                                <%!-- <%= [] =
+                                  for picked <- @pick_list,
+                                      picked == "#{to_string(game.id) <> to_string(key)}" do
+                                    "!bg-red-500 text-white" 
+                                  end %> --%>
+
                                 <.button
                                   phx-click="select-odds"
                                   phx-value-game_name={game.home_team.team_name <>" Vs "<>game.away_team.team_name}
@@ -52,7 +73,7 @@
                                   phx-value-selection_id={key}
                                   phx-value-odds={value}
                                   phx-value-game_id={game.id}
-                                  class="bg-gray-800 text-white"
+                                  class={}
                                 >
                                   <%= "#{value}" %>
                                 </.button>
@@ -72,102 +93,106 @@
     </div>
   </div>
   <div class="w-1/3  p-4">
-    <div class=" border rounded-lg p-4 shadow-md">
-      <div class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-        <div class="border-b-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
-          <.header>
-            Your Selection
-          </.header>
-        </div>
-        <div class="p-6">
-          <%= Enum.map(@mybets, fn pick -> %>
-            <div class="flex mb-4 ">
-              <div class="w-full bg-white-400 ">
-                <ul role="list" class="divide-y divide-gray-100">
-                  <li class="flex justify-between gap-x-6 py-5">
-                    <div class="flex min-w-0 gap-x-4">
-                      <div class="min-w-0 flex-auto">
-                        <p class="text-sm font-semibold leading-6 text-gray-900">
-                          <%= pick.game_name %>
-                        </p>
-                        <p class="mt-1 truncate text-xs leading-5 text-gray-500">
-                          Your Pick: <%= pick.selection_name %>
-                        </p>
-                      </div>
+    <div class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+      <div class="border-b-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
+        <.header>
+          Your Selection
+        </.header>
+      </div>
+      <div class="p-6">
+        <%= Enum.map(@mybets, fn pick -> %>
+          <div class="flex mb-4 ">
+            <div class="w-full bg-white-400 ">
+              <ul role="list" class="divide-y divide-gray-100">
+                <li class="flex justify-between gap-x-6 py-5">
+                  <div class="flex min-w-0 gap-x-4">
+                    <div class="min-w-0 flex-auto">
+                      <p class="text-sm font-semibold leading-6 text-gray-900">
+                        <%= pick.game_name %>
+                      </p>
+                      <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+                        Your Pick: <%= pick.selection_name %>
+                      </p>
                     </div>
-                    <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                      <p class="text-sm leading-6 text-gray-900">
-                        <button
-                          type="button"
-                          phx-value-game_id={pick.game_id}
-                          phx-click="remove-bet"
-                          class=" right-4 top-4 text-gray-400 hover:text-gray-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8"
+                  </div>
+                  <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                    <p class="text-sm leading-6 text-gray-900">
+                      <button
+                        type="button"
+                        phx-value-game_id={pick.game_id}
+                        phx-click="remove-bet"
+                        class=" right-4 top-4 text-red-500 hover:text-red-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8"
+                      >
+                        <span class="sr-only">Close</span>
+
+                        <svg
+                          class="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          aria-hidden="true"
                         >
-                          <span class="sr-only">Close</span>
-
-                          <svg
-                            class="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button>
-                      </p>
-                      <p class="mt-1 text-xs leading-5 text-gray-500">
-                        <%= pick.odds %>
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          <% end) %>
-        </div>
-        <.simple_form for={@form}  phx-submit="placebet">
-          <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
-            <div class="flex justify-between text-base font-medium text-gray-900">
-              <p>Total Odds:</p>
-              <p><%= @total_odds %></p>
-            </div>
-
-            <div class="flex mt-5 justify-between text-base font-medium text-gray-900">
-              <p>BET AMOUNT:</p>
-
-              <div class="w-1/3">
-                <input
-                  type="number"
-                  name="bet_amount"
-                  phx-change="change-bet-amount"
-                  value={@bet_amount}
-                  class="w-full px-2 py-1 text-sm border border-gray-300 rounded outline-none"
-                  placeholder="0.00"
-                />
-              </div>
-            </div>
-            <div class="flex mt-5 justify-between text-base font-medium text-gray-900">
-              <p class="mt-0.5 text-sm text-gray-500">Possible Win.</p>
-              <p><%= @total_win %></p>
-            </div>
-
-            <div class="mt-6">
-              <button
-               
-                class="flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-              >
-                Place Bet
-              </button>
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </p>
+                    <p class="mt-1 text-xs leading-5 text-gray-500">
+                      <%= pick.odds %>
+                    </p>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
-        </.simple_form>
+        <% end) %>
       </div>
+      <div class="toast">
+        <div class="toast-info"><%= @info %></div>
+      </div>
+      <.simple_form for={@form} phx-submit="placebet">
+        <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+          <div class="flex justify-between text-base font-medium text-gray-900">
+            <p>Total ODDS:</p>
+            <p><%= @total_odds %></p>
+            <input type="hidden" name="total_odds" value={@total_odds} />
+          </div>
+
+          <div class="flex mt-5 justify-between text-base font-medium text-gray-900">
+            <p>BET AMOUNT:  Ksh.</p>
+
+            <div class="w-1/3">
+           
+              <input
+                type="number"
+                min="10.0"
+                name="bet_amount"
+                phx-change="change-bet-amount"
+                value={@bet_amount}
+                class="w-full px-2 py-1 text-sm border border-gray-300 rounded outline-none"
+                placeholder="0.00"
+              />
+            </div>
+          </div>
+          <div class="flex mt-5 justify-between text-base font-medium text-gray-900">
+            <p class="mt-0.5 text-sm text-gray-500">Possible Win.</p>
+            <p>Ksh:  <%= @total_win %></p>
+          </div>
+
+          <div class="mt-6">
+            <button
+              disabled={@btn_disable}
+              class="flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+            >
+              Place Bet
+            </button>
+          </div>
+        </div>
+      </.simple_form>
     </div>
   </div>
 </div>

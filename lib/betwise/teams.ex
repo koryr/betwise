@@ -19,6 +19,7 @@ defmodule Betwise.Teams do
   """
   def list_teams do
     Repo.all(Team)
+    |> Repo.preload([:sport_type])
   end
 
   @doc """
@@ -49,10 +50,16 @@ defmodule Betwise.Teams do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_team(attrs \\ %{}) do
+    def create_team(attrs \\ %{}) do
     %Team{}
     |> Team.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, team} ->
+       {:ok, team |> Repo.preload([:sport_type])}
+
+
+    end
   end
 
   @doc """

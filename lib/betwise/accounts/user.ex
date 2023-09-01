@@ -13,6 +13,7 @@ defmodule Betwise.Accounts.User do
     field :confirmed_at, :naive_datetime
     belongs_to(:role, Betwise.Accounts.Role)
     field(:custom_permissions, :map, default: %{})
+    field :deleted_at, :utc_datetime
 
     timestamps()
   end
@@ -48,6 +49,22 @@ defmodule Betwise.Accounts.User do
     |> validate_email(opts)
     |> validate_password(opts)
   end
+
+  def user_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:first_name, :last_name, :msisdn, :avatar, :email, :role_id, :custom_permissions])
+    |> unique_constraint(:email)
+    |> unique_constraint(:msisdn)
+    |> validate_email(opts)
+
+  end
+
+  def delete_user_changeset(user, attrs \\ %{}) do
+    user
+    |> cast(attrs, [:deleted_at])
+
+  end
+
 
   defp validate_email(changeset, opts) do
     changeset

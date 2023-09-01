@@ -27,10 +27,8 @@
     <% end %>
   </:col>
 
-  <:col :let={{_id, game}} label="Date from"><%= game.date_from %></:col>
-  <:col :let={{_id, game}} label="Time from"><%= game.time_from %></:col>
-  <:col :let={{_id, game}} label="Date to"><%= game.date_to %></:col>
-  <:col :let={{_id, game}} label="Time to"><%= game.time_to %></:col>
+  <:col :let={{_id, game}} label="Date from"><%= game.date_from %><p><%= game.time_from %></p></:col>
+  <:col :let={{_id, game}} label="Date to"><%= game.date_to %><p><%= game.time_to %></p></:col>
   <:action :let={{_id, game}}>
     <div class="sr-only">
       <.link navigate={~p"/sports/games/#{game}"}>Show</.link>

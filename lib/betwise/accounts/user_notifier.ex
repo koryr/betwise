@@ -8,7 +8,7 @@ defmodule Betwise.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Betwise", "contact@example.com"})
+      |> from({"Betwise", "koryrh@gmail.com"})
       |> subject(subject)
       |> text_body(body)
 

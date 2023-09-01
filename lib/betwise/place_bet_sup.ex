@@ -1,5 +1,6 @@
 defmodule Betwise.PlaceBetSup do
   @moduledoc false
+  alias Betwise.Play
   alias Betwise.PlaceBet
   use Supervisor
 
@@ -10,7 +11,8 @@ defmodule Betwise.PlaceBetSup do
   @impl true
   def init(_opts) do
     children = [
-      {PlaceBet, []}
+      {PlaceBet, []},
+      {Play, []}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

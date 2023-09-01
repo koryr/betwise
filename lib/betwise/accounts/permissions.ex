@@ -14,7 +14,8 @@ defmodule Betwise.Accounts.Permissions do
       "selections" => ["create", "read", "update", "delete"],
       "invoices" => ["create", "read", "update", "delete"],
       "dashboard" => [ "read"],
-      "markets" => ["create", "read", "update", "delete"]
+      "markets" => ["create", "read", "update", "delete"],
+      "emails" => ["create", "read", "update", "delete"]
     }
   end
 

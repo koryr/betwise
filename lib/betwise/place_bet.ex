@@ -1,8 +1,6 @@
 defmodule Betwise.PlaceBet do
   alias Betwise.Bets
-  alias Betwise.Bets.Bet
   alias Betwise.Invoices
-  alias Betwise.Invoices.Invoice
   use GenServer
   @tab :bets
 
@@ -18,8 +16,8 @@ defmodule Betwise.PlaceBet do
     GenServer.call(__MODULE__, {:getbets, user_id})
   end
 
-  def create_bet(user_id, amount) do
-    GenServer.cast(__MODULE__, {:createbet, {user_id, amount}})
+  def create_bet(user_id, amount, total_odds) do
+    GenServer.call(__MODULE__, {:createbet, {user_id, amount, total_odds}})
   end
 
   def remove_bet(user_id, selection_id) do
@@ -27,6 +25,7 @@ defmodule Betwise.PlaceBet do
   end
 
   def init([]) do
+    # yesterday = DateTime.utc_now() |> DateTime.add(-86400)
     :ets.new(@tab, [:set, :public, :named_table])
     {:ok, %{}}
   end
@@ -99,7 +98,7 @@ defmodule Betwise.PlaceBet do
     {:reply, data, state}
   end
 
-  def handle_cast({:createbet, {user_id, amount}}, state) do
+  def handle_call({:createbet, {user_id, amount, total_odds}}, _from,  state) do
     bets =
       case :ets.lookup(@tab, user_id) do
         [] ->
@@ -109,13 +108,13 @@ defmodule Betwise.PlaceBet do
           data
       end
 
-    params = %{"user_id" => user_id, "bet_amount" => amount}
+    params = %{"user_id" => user_id, "total_odds" => total_odds, "bet_amount" => amount}
 
-    case Invoices.create_invoice(params) do
+    result = case Invoices.create_invoice(params) do
       {:ok, invoice} ->
         Enum.map(bets, fn bet ->
           %{
-            "odds"=> bet.odds,
+            "odds" => bet.odds,
             "game_id" => bet.game_id,
             "selection_id" => bet.selection_id,
             "invoice_id" => invoice.id,
@@ -130,9 +129,7 @@ defmodule Betwise.PlaceBet do
         {:error, changeset}
     end
 
-    IO.inspect("bets#{inspect(bets)}")
-
-    {:noreply, state}
+    {:reply, result, state}
   end
 
   def handle_info(_msg, state) do

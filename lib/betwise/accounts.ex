@@ -4,6 +4,8 @@ defmodule Betwise.Accounts do
   """
 
   import Ecto.Query, warn: false
+  alias Betwise.Invoices.Invoice
+  alias Betwise.Bets.Bet
   alias Betwise.Repo
 
   alias Betwise.Accounts.{User, UserToken, UserNotifier}
@@ -11,7 +13,12 @@ defmodule Betwise.Accounts do
   ## Database getters
 
   def list_users do
-    Repo.all(User) |> Repo.preload([:role])
+    query =
+      from u in User,
+        where: is_nil(u.deleted_at),
+        select: u
+
+    Repo.all(query) |> Repo.preload([:role])
   end
 
   @doc """
@@ -44,7 +51,7 @@ defmodule Betwise.Accounts do
   """
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
-    user = Repo.get_by(User, email: email)|> Repo.preload([:role])
+    user = Repo.get_by(User, email: email) |> Repo.preload([:role])
     if User.valid_password?(user, password), do: user
   end
 
@@ -95,6 +102,16 @@ defmodule Betwise.Accounts do
   """
   def change_user_registration(%User{} = user, attrs \\ %{}) do
     User.registration_changeset(user, attrs, hash_password: false, validate_email: false)
+  end
+
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.user_changeset(user, attrs, hash_password: false, validate_email: false)
+  end
+
+  def update_user(%User{} = user, attrs) do
+    user
+    |> User.user_changeset(attrs, hash_password: false, validate_email: false)
+    |> Repo.update()
   end
 
   ## Settings
@@ -235,7 +252,7 @@ defmodule Betwise.Accounts do
   """
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
-    Repo.one(query)|> Repo.preload([:role])
+    Repo.one(query) |> Repo.preload([:role])
   end
 
   @doc """
@@ -248,6 +265,21 @@ defmodule Betwise.Accounts do
 
   def delete_user(%User{} = user) do
     Repo.delete(user)
+  end
+
+  def soft_delete_record(%User{} = user) do
+    user
+    |> User.delete_user_changeset(%{deleted_at: DateTime.utc_now()})
+    |> Repo.update()
+    |> case do
+      {:ok, user} ->
+        Repo.delete_all(from(b in Bet, where: b.user_id == ^user.id))
+        Repo.delete_all(from(i in Invoice, where: i.user_id == ^user.id))
+
+      {:error, error} ->
+        IO.inspect(error)
+        {:error, error}
+    end
   end
 
   ## Confirmation
@@ -371,10 +403,12 @@ defmodule Betwise.Accounts do
 
   """
   def list_roles do
-    query = from r in Role,
-          where: r.role_name != "superuser",
-          select: r
-    Repo.all(query)
+    # query =
+    #   from r in Role,
+    #     where: r.role_name != "superuser",
+    #     select: r
+
+    Repo.all(Role)
   end
 
   @doc """
@@ -423,7 +457,7 @@ defmodule Betwise.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_role(%Role{} = role, attrs) do
+  def update_role(%Role{} = role, attrs \\ %{}) do
     role
     |> Role.changeset(attrs)
     |> Repo.update()

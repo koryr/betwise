@@ -6,7 +6,8 @@ defmodule BetwiseWeb.Auth.UserRegistrationLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
+    <div class="mx-auto mt-20 p-10 max-w-7xl bg-white">
+    <div class="mx-auto max-w-sm ">
       <.header class="text-center">
         Register for an account
         <:subtitle>
@@ -32,7 +33,7 @@ defmodule BetwiseWeb.Auth.UserRegistrationLive do
         </.error>
         <.input field={@form[:first_name]} type="text" label="First Name" />
         <.input field={@form[:last_name]} type="text" label="Last Name" />
-        <.input field={@form[:msisdn]} type="text" label="MSISDN" />
+        <.input field={@form[:msisdn]} type="text" label="Phone Number" />
         <.input field={@form[:email]} type="email" label="Email" required />
 
         <.input field={@form[:password]} type="password" label="Password" required />
@@ -41,6 +42,7 @@ defmodule BetwiseWeb.Auth.UserRegistrationLive do
           <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
         </:actions>
       </.simple_form>
+    </div>
     </div>
     """
   end

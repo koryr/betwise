@@ -7,22 +7,14 @@ defmodule BetwiseWeb.Auth.RoleLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    required_permission = {"roles", ["read"]}
 
-
-    # IO.inspect("permssion#{inspect(required_permission(:index))}")
-
-    # if Permissions.user_has_permission?(user, required_permission) do
-    #   IO.inspect("permssion")
-    # end
-
-    # if Permissions.user_has_permission?(user, required_permission) do
-    #   socket
-    # else
-    #   socket
-    #   |> put_status(:forbidden)
-    #   |> halt()
-    # end
+    if Permissions.user_has_permission?(socket.assigns.current_user,
+    required_permission(socket.assigns.live_action)) do
+      socket
+    else
+      socket
+      |> put_flash(:error, "Forbidden: You have no permission tho access this page")
+    end
 
     {:ok, stream(socket, :roles, Accounts.list_roles())}
   end
@@ -77,9 +69,12 @@ defmodule BetwiseWeb.Auth.RoleLive.Index do
   end
 
   defp required_permission(action) do
+
     list = [
       index: {"roles", "read"},
+      new: {"roles", "create"},
       show: {"roles", "read"},
+      edit: {"roles", "update"},
       delete: {"roles", "delete"}
     ]
 

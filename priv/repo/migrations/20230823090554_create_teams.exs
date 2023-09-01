@@ -10,5 +10,6 @@ defmodule Betwise.Repo.Migrations.CreateTeams do
     end
 
     create index(:teams, [:sport_type_id])
+    create unique_index(:teams, [:sport_type_id, :team_name])
   end
 end

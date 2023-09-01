@@ -1,4 +1,5 @@
 defmodule BetwiseWeb.SportsLive.Teams.FormComponent do
+  alias Betwise.Sports
   use BetwiseWeb, :live_component
 
   alias Betwise.Teams
@@ -19,7 +20,15 @@ defmodule BetwiseWeb.SportsLive.Teams.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
+        <.input
+          field={@form[:sport_type_id]}
+          type="select"
+          label="Sport Type"
+          prompt="Select Sport"
+          options={Enum.map(@sport_types, fn type -> {type.sport_name, type.id} end)}
+        />
         <.input field={@form[:team_name]} type="text" label="Team name" />
+
         <:actions>
           <.button phx-disable-with="Saving...">Save Team</.button>
         </:actions>
@@ -34,6 +43,7 @@ defmodule BetwiseWeb.SportsLive.Teams.FormComponent do
 
     {:ok,
      socket
+     |> assign(:sport_types, Sports.list_sport_type())
      |> assign(assigns)
      |> assign_form(changeset)}
   end

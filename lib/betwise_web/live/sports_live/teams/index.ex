@@ -1,4 +1,5 @@
 defmodule BetwiseWeb.SportsLive.Teams.Index do
+  alias Betwise.Sports
   use BetwiseWeb, :live_view
 
   alias Betwise.Teams
@@ -6,7 +7,16 @@ defmodule BetwiseWeb.SportsLive.Teams.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :teams, Teams.list_teams())}
+    socket =
+      socket
+      |> assign(:sport_types, Sports.list_sport_type())
+
+    {:ok,
+     stream(
+       socket,
+       :teams,
+       Teams.list_teams()
+     )}
   end
 
   @impl true

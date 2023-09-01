@@ -16,7 +16,8 @@ defmodule Betwise.Accounts.DefaultRoles do
           "selections" => ["create", "read", "update", "delete"],
           "invoices" => ["create", "read", "update", "delete"],
           "dashboard" => [ "read"],
-          "markets" => ["create", "read", "update", "delete"]
+          "markets" => ["create", "read", "update", "delete"],
+          "emails" => ["create", "read", "update", "delete"],
         }
       },
       %{
@@ -26,14 +27,16 @@ defmodule Betwise.Accounts.DefaultRoles do
           "users" => ["create", "read", "update", "delete"],
           "dashboard" => [ "read"],
           "bets" => ["create", "read", "update", "delete"],
+          "games" => ["create", "read", "update", "delete"],
           "highlights" => ["create", "read", "update", "delete"],
+          "invoices" => ["create", "read", "update", "delete"],
+          "emails" => ["create", "read", "update", "delete"],
         }
       },
       %{
         role_display_name: "User",
         role_name: "user",
         permissions: %{
-          "bets" => ["create", "read", "update", "delete"],
           "highlights" => ["read"],
         }
       }

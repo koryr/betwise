@@ -9,7 +9,7 @@ defmodule BetwiseWeb.Auth.RoleLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage role records in your database.</:subtitle>
+        <:subtitle>Manage role records.</:subtitle>
       </.header>
 
       <.simple_form
@@ -21,7 +21,6 @@ defmodule BetwiseWeb.Auth.RoleLive.FormComponent do
       >
         <.input field={@form[:role_display_name]} type="text" label="Role Display name" />
         <.input field={@form[:role_name]} type="text" label="Role name" />
-        <.input field={@form[:description]} type="text" label="Description" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Role</.button>
         </:actions>

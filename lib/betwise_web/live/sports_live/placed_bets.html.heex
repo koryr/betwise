@@ -1,0 +1,27 @@
+<.header>
+  Listing Bets
+</.header>
+<.table id="bets" rows={@streams.bets}>
+  <:col :let={{_id, bet}} label="User">
+    <%= bet.user.first_name %>
+    <p><%= bet.user.email %></p>
+  </:col>
+  <:col :let={{_id, bet}} label="Teams">
+    <%= unless is_nil(bet.game) do %>
+      <%= bet.game.home_team.team_name %> Vs
+    <% end %>
+
+    <%= unless is_nil(bet.game) do %>
+      <%= bet.game.away_team.team_name %>
+    <% end %>
+  </:col>
+  <:col :let={{_id, bet}} label="Picked Odds">
+    <%= bet.selection.name %>
+    <p><%= bet.odds %></p>
+  </:col>
+
+  <:col :let={{_id, bet}} label="Results">
+    <%= bet.game.home %> - <%= bet.game.away %>
+  </:col>
+
+</.table>

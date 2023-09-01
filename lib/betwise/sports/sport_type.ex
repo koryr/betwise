@@ -5,6 +5,7 @@ defmodule Betwise.Sports.SportType do
   schema "sport_types" do
     field :sport_name, :string
     field :description, :string
+    has_many(:teams, Betwise.Teams.Team)
 
     timestamps()
   end

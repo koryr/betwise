@@ -9,7 +9,9 @@ defmodule Betwise.Repo.Migrations.AddUsersTable do
       add :avatar, :string
       add :role_id, references(:roles, on_delete: :nothing)
       add :custom_permissions, :map
+      add :deleted_at, :utc_datetime
     end
     create unique_index(:users, [:msisdn])
+    create unique_index(:users, [:role_id])
   end
 end

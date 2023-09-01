@@ -8,7 +8,7 @@ defmodule BetwiseWeb.Sidebar do
     <div class="absolute top-0 left-0 z-40 flex-shrink-0 w-64 h-screen p-4 overflow-y-auto transition-transform duration-200 ease-in-out transform border-r lg:static lg:left-auto lg:top-auto lg:translate-x-0 lg:overflow-y-auto no-scrollbar bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 -translate-x-64">
       <div class="flex justify-between pr-3 mb-10 sm:px-2">
         <button class="text-gray-500  hover:text-gray-400" aria-controls="sidebar">
-          <a href="/" data-phx-link="redirect" data-phx-link-state="push" class="block">
+          <a href="/" data-phx-link="redirect" data-phx-link-state="push" >
             <img
               class="h-8 transition-transform duration-300 ease-out transform hover:scale-105 block dark:hidden"
               src={~p"/images/logo.svg"}

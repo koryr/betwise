@@ -15,8 +15,9 @@
   <:col :let={{_id, user}} label="First Name"><%= user.first_name %></:col>
   <:col :let={{_id, user}} label="Last Name"><%= user.last_name %></:col>
   <:col :let={{_id, user}} label="Email address"><%= user.email %></:col>
-  <:col :let={{_id, user}} label="MSISDN"><%= user.msisdn %></:col>
+  <:col :let={{_id, user}} label="Phone Number"><%= user.msisdn %></:col>
   <:col :let={{_id, user}} label="Role"><%= user.role.role_display_name %></:col>
+ 
   <:action :let={{id, user}}>
     <%= if @current_user.id != user.id do %>
       <.link

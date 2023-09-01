@@ -6,8 +6,7 @@ defmodule BetwiseWeb.Menus do
     do:
       build_menu(
         [
-
-          if Permissions.user_has_permission?(current_user, {"roles", ["read"]}) do
+          if Permissions.user_has_permission?(current_user, {"dashboard", ["read"]}) do
             :dashboard
           end,
           if Permissions.user_has_permission?(current_user, {"highlights", ["read"]}) do
@@ -19,25 +18,34 @@ defmodule BetwiseWeb.Menus do
           if Permissions.user_has_permission?(current_user, {"games", ["read"]}) do
             :games
           end,
-          if Permissions.user_has_permission?(current_user, {"sport_types", ["read"]}) do
-            :sport_types
-          end,
           if Permissions.user_has_permission?(current_user, {"teams", ["read"]}) do
             :teams
           end,
-          if Permissions.user_has_permission?(current_user, {"bet_types", ["read"]}) do
-            :bet_types
+          if Permissions.user_has_permission?(current_user, {"sport_types", ["read"]}) do
+            :sport_types
           end,
-
           if Permissions.user_has_permission?(current_user, {"selections", ["read"]}) do
             :selections
+          end,
+          if Permissions.user_has_permission?(current_user, {"bet_types", ["read"]}) do
+            :bet_types
           end,
           if Permissions.user_has_permission?(current_user, {"users", ["read"]}) do
             :users
           end,
           if Permissions.user_has_permission?(current_user, {"roles", ["read"]}) do
             :roles
+          end,
+          if Permissions.user_has_permission?(current_user, {"emails", ["read"]}) do
+            :emails
           end
+          # ,
+          # %{
+          #   name: :company,
+          #   label: "Company",
+          #   icon: :building_office,
+          #   menu_items: []
+          # }
         ],
         current_user
       )
@@ -54,7 +62,11 @@ defmodule BetwiseWeb.Menus do
       )
 
   def build_menu(links, current_user) do
-    Enum.map(links, fn link  -> if !is_nil(link) do get_link(link, current_user)end end)
+    Enum.map(links, fn link ->
+      if !is_nil(link) do
+        get_link(link, current_user)
+      end
+    end)
   end
 
   def get_link(:dashboard, _current_user) do
@@ -96,7 +108,7 @@ defmodule BetwiseWeb.Menus do
   def get_link(:profile, current_user) do
     %{
       name: :profile,
-      label: "Profile",
+      label: "Account",
       path: ~p"/users/p/#{current_user.email}",
       icon: "hero-user"
     }
@@ -172,6 +184,15 @@ defmodule BetwiseWeb.Menus do
       label: "Bets",
       path: ~p"/sports/bets",
       icon: "hero-cube-transparent"
+    }
+  end
+
+  def get_link(:emails, _current_user) do
+    %{
+      name: :emails,
+      label: "Emails",
+      path: ~p"/emails",
+      icon: "hero-inbox"
     }
   end
 end

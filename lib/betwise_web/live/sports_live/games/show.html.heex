@@ -34,7 +34,8 @@
       BetwiseWeb.SportsLive.Games.AddOddsComponent,
       id: @game.id,
       market: @market,
-      current_user: @current_user
+      current_user: @current_user,
+      patch: ~p"/sports/games/#{@game.id}"
     ) %>
    
     <div class="grid grid-cols-3 gap-4">
@@ -75,7 +76,7 @@
   on_cancel={JS.patch(~p"/sports/games/#{@game}")}
 >
   <.live_component
-    module={BetwiseWeb.Sports.GameLive.FormComponent}
+    module={BetwiseWeb.SportsLive.Games.FormComponent}
     id={@game.id}
     title={@page_title}
     action={@live_action}

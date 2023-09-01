@@ -19,7 +19,7 @@ defmodule Betwise.MixProject do
   def application do
     [
       mod: {Betwise.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :swoosh, :gen_smtp]
     ]
   end
 
@@ -51,7 +51,13 @@ defmodule Betwise.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:heroicons, "~> 0.5.3"}
+      {:heroicons, "~> 0.5.3"},
+      {:priority_queue, "~> 1.0"},
+      {:gen_smtp, "~> 1.1.1"},
+      {:hackney, "~> 1.18.0"},
+      {:mail, ">= 0.0.0"},
+      {:oauth2, "~> 2.1"},
+      {:goth, "~> 1.0"}
     ]
   end
 

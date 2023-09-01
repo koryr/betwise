@@ -59,15 +59,49 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# config :betwise, Betwise.Mailer,
+#   adapter: Swoosh.Adapters.SMTP,
+#   server: "smtp.gmail.com",
+#   port: 587,
+#   username: "lunnaschool@gmail.com",
+#   password: "ntlbpelsmjvhapco",
+#   tls: true
 
+# config :betwise, Betwise.Mailer,
+#   adapter: Swoosh.Adapters.Gmail,
+#   access_token: "ya29.a0AfB_byAue9IXvkkzsm2JzJq8RoCULdeWUO-euOGrkLL6hAA7quHIFlhcu6mcIwOiUgqmSpmw1yStGXWIxwSAsMN35hvhIHbiINTDJ4njK8fsUudfqfx2YCaqj5oQd3LHU72RmubPPiVmU1ht-SBfYYwrKaRMdNmv3HFwBwaCgYKAaMSARISFQHsvYlsVAn9mvIMLaG8grfxI0X4DQ0173"
 
-config :swoosh, :email,
-  adapter: Swoosh.Adapters.SMTP,
-  server: "smtp.example.com",
+# config :oauth2,
+#   json: "/opt/workspace/value8/betwise/credentials.json"
+
+# config :goth,
+#   json: "/opt/workspace/value8/betwise/credentials.json",
+#   site: "https://accounts.google.com",
+#   token_url: "/o/oauth2/token",
+#   authorize_url: "/o/oauth2/auth"
+
+config :swoosh, local: true
+# config :swoosh, :adapter, Swoosh.Adapters.SMTP
+
+config :betwise, Betwise.Mailer,
+  # adapter: Swoosh.Adapters.SMTP,
+  relay: "Swoosh.Adapters.SMTP",
+  server: "smtp.gmail.com",
   port: 587,
-  username: "your_username",
-  password: "your_password",
-  tls: :if_available
+  username: "haron.korir@gmail.com",
+  password: "stkqrkiaspihayho",
+  tls: true,
+  ssl: false,
+  otp_app: :betwise,
+  debug: true
+
+# config :swoosh, Swoosh.Adapters.SMTP,
+#   adapter: Swoosh.Adapters.Local,
+#   server: "smtp.gmail.com",
+#   port: 587,
+#   username: "lunnaschool@gmail.com",
+#   password: "ntlbpelsmjvhapco",
+#   tls: true
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -19,7 +19,7 @@ defmodule Betwise.Selections do
   """
   def list_selections do
     Repo.all(Selection)
-    |>Repo.preload([:bet_type])
+    |> Repo.preload([:bet_type])
   end
 
   @doc """
@@ -36,7 +36,7 @@ defmodule Betwise.Selections do
       ** (Ecto.NoResultsError)
 
   """
-  def get_selection!(id) ,  do: Repo.get!(Selection, id) |>Repo.preload([:bet_type])
+  def get_selection!(id), do: Repo.get!(Selection, id) |> Repo.preload([:bet_type])
 
   @doc """
   Creates a selection.
@@ -54,7 +54,14 @@ defmodule Betwise.Selections do
     %Selection{}
     |> Selection.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, selection} ->
+        selection =
+          selection
+          |> Repo.preload([:bet_type])
 
+        {:ok, selection}
+    end
   end
 
   @doc """
@@ -111,8 +118,13 @@ defmodule Betwise.Selections do
   def get_selections_by_bet_type!(id) do
     from(s in Selection, where: [bet_type_id: ^id], order_by: [asc: :id])
     |> Repo.all()
-    |>Repo.preload([:bet_type])
-
+    |> Repo.preload([:bet_type])
   end
 
+  @spec get_selections_by_name!(any) ::
+          nil | [%{optional(atom) => any}] | %{optional(atom) => any}
+  def get_selections_by_name!(name) do
+    from(s in Selection, where: [name: ^name])
+    |> Repo.one()
+  end
 end

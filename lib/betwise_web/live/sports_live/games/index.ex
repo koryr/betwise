@@ -1,4 +1,5 @@
 defmodule BetwiseWeb.SportsLive.Games.Index do
+  alias Betwise.Accounts.Permissions
   use BetwiseWeb, :live_view
 
   alias Betwise.Games
@@ -6,6 +7,17 @@ defmodule BetwiseWeb.SportsLive.Games.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    socket =
+      if Permissions.user_has_permission?(
+           socket.assigns.current_user,
+           required_permission(socket.assigns.live_action)
+         ) do
+        socket
+      else
+        socket
+        |> put_flash(:error, "Could not find the user")
+        |> push_patch(to: socket.assigns.patch)
+      end
 
     {:ok, stream(socket, :games, Games.list_games())}
   end
@@ -44,5 +56,24 @@ defmodule BetwiseWeb.SportsLive.Games.Index do
     {:ok, _} = Games.delete_game(game)
 
     {:noreply, stream_delete(socket, :games, game)}
+  end
+
+  defp required_permission(action) do
+    list = [
+      index: {"games", "read"},
+      new: {"games", "create"},
+      show: {"games", "read"},
+      delete: {"games", "delete"}
+    ]
+
+    result = Enum.find(list, fn {key, _value} -> key == action end)
+
+    case result do
+      {_key, value} ->
+        value
+
+      nil ->
+        IO.puts("Permission not found")
+    end
   end
 end

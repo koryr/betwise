@@ -1,5 +1,5 @@
 defmodule BetwiseWeb.Router do
-
+  alias BetwiseWeb.EmailLive
   alias BetwiseWeb.UserLive.Profile
   alias BetwiseWeb.DashboardLive
   use BetwiseWeb, :router
@@ -30,7 +30,15 @@ defmodule BetwiseWeb.Router do
 
     live_session :user,
       on_mount: [{BetwiseWeb.Auth.UserAuth, :mount_current_user}] do
-      live "/", DashboardLive
+      live "/", DashboardLive, :index
+      live "/emails", EmailLive.Index, :index
+      live "/emails/new", EmailLive.Index, :new
+      live "/emails/:id/edit", EmailLive.Index, :edit
+
+      live "/emails/:id", EmailLive.Show, :show
+      live "/emails/:id/show/edit", EmailLive.Show, :edit
+
+      live "/sports/configs", BetwiseWeb.SportsLive.Config, :index
     end
   end
 
@@ -116,7 +124,7 @@ defmodule BetwiseWeb.Router do
       live "/", UserLive.SysUsers, :index
       live "/new", UserLive.SysUsers, :new
       live "/:id", UserLive.Show, :show
-      live "/:id/show/edit", UserLive.Show, :edit
+      live "/:id/edit", UserLive.Show, :edit
       live "/p/:email", UserLive.Profile, :index
     end
   end
@@ -140,14 +148,12 @@ defmodule BetwiseWeb.Router do
       live "/teams/:id", Teams.Show, :show
       live "/teams/:id/show/edit", Teams.Show, :edit
 
-
       live "/bet_types", BetTypes.Index, :index
       live "/bet_types/new", BetTypes.Index, :new
       live "/bet_types/:id/edit", BetTypes.Index, :edit
 
       live "/bet_types/:id", BetTypes.Show, :show
       live "/bet_types/:id/show/edit", BetTypes.Show, :edit
-
 
       live "/games", Games.Index, :index
       live "/games/new", Games.Index, :new
@@ -163,7 +169,6 @@ defmodule BetwiseWeb.Router do
       live "/selections/:id", Selections.Show, :show
       live "/selections/:id/show/edit", Selections.Show, :edit
 
-
       live "/markets", Markets.Index, :index
       live "/markets/new", Markets.Index, :new
       live "/markets/:id/edit", Markets.Index, :edit
@@ -174,9 +179,6 @@ defmodule BetwiseWeb.Router do
       live "/highlights", Highlights, :index
 
       live "/bets", PlacedBets, :index
-
     end
   end
-
-
 end
